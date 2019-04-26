@@ -318,6 +318,9 @@ var env = {
 
 var updateGeometry = function(i) {
   var element = i.element;
+  if(!element) {
+    return;
+  }
   var roundedScrollTop = Math.floor(element.scrollTop);
 
   i.containerWidth = element.clientWidth;
@@ -551,7 +554,9 @@ function bindMouseScrollHandler(
     updateGeometry(i);
 
     e.stopPropagation();
-    e.preventDefault();
+    if (e.cancelable) {
+      e.preventDefault();
+    }
   }
 
   function mouseUpHandler() {
@@ -573,7 +578,10 @@ function bindMouseScrollHandler(
     i[scrollbarYRail].classList.add(cls.state.clicking);
 
     e.stopPropagation();
-    e.preventDefault();
+
+    if (e.cancelable) {
+      e.preventDefault();
+    }
   });
 }
 
@@ -716,7 +724,9 @@ var keyboard = function(i) {
     updateGeometry(i);
 
     if (shouldPreventDefault(deltaX, deltaY)) {
-      e.preventDefault();
+      if (e.cancelable) {
+        e.preventDefault();
+      }
     }
   });
 };
@@ -864,7 +874,10 @@ var wheel = function(i) {
     shouldPrevent = shouldPrevent || shouldPreventDefault(deltaX, deltaY);
     if (shouldPrevent && !e.ctrlKey) {
       e.stopPropagation();
-      e.preventDefault();
+
+      if (e.cancelable) {
+        e.preventDefault();
+      }
     }
   }
 
@@ -1038,7 +1051,9 @@ var touch = function(i) {
       }
 
       if (shouldPrevent(differenceX, differenceY)) {
-        e.preventDefault();
+        if (e.cancelable) {
+          e.preventDefault();
+        }
       }
     }
   }
