@@ -390,6 +390,7 @@ var updateGeometry = function(i) {
 
   updateCss(element, i);
 
+
   if (i.scrollbarXActive) {
     element.classList.add(cls.state.active('x'));
   } else {
@@ -567,17 +568,21 @@ function bindMouseScrollHandler(
   var scrollBy = null;
 
   function mouseMoveHandler(e) {
-    element[scrollTop] =
+
+    // element[scrollTop] =
+    //   startingScrollTop + scrollBy * (e[pageY] - startingMousePageY);
+    const targetX =
       startingScrollTop + scrollBy * (e[pageY] - startingMousePageY);
+
+    i.element.dispatchEvent(
+      new CustomEvent('ps-update-position', { 'detail': {
+        x: targetX,
+        type: 'mousemove',
+      }})
+    );
     addScrollingClass(i, y);
     updateGeometry(i);
 
-    // i.element.dispatchEvent(
-    //   new CustomEvent('ps-update-position', { 'detail': {
-    //     x: element.scrollLeft,
-    //     type: 'keyboard',
-    //   }})
-    // );
 
     e.stopPropagation();
     if (e.cancelable) {
