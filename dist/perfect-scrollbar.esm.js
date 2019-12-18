@@ -497,7 +497,26 @@ var clickRail = function(i) {
       i.scrollbarXRail.getBoundingClientRect().left;
     var direction = positionLeft > i.scrollbarXLeft ? 1 : -1;
 
-    i.element.scrollLeft += direction * i.containerWidth;
+    // i.element.scrollLeft += direction * i.containerWidth;
+
+    // Update this via event.
+    var x = i.element.scrollLeft;
+    var scrollWidth =
+      i.scrollbarXRail.getBoundingClientRect().width;
+    var percent = e.pageX / scrollWidth;
+    var barWidth = i.scrollbarX.getBoundingClientRect().width;
+    var x = (
+      (i.element.scrollWidth - window.innerWidth) * percent
+    );
+
+    i.element.dispatchEvent(
+        new CustomEvent('ps-update-position', { 'detail': {
+          x: x,
+          type: 'railClick',
+        }})
+    );
+
+
     updateGeometry(i);
 
     e.stopPropagation();
@@ -552,6 +571,13 @@ function bindMouseScrollHandler(
       startingScrollTop + scrollBy * (e[pageY] - startingMousePageY);
     addScrollingClass(i, y);
     updateGeometry(i);
+
+    // i.element.dispatchEvent(
+    //   new CustomEvent('ps-update-position', { 'detail': {
+    //     x: element.scrollLeft,
+    //     type: 'keyboard',
+    //   }})
+    // );
 
     e.stopPropagation();
     if (e.cancelable) {
@@ -720,7 +746,15 @@ var keyboard = function(i) {
     }
 
     element.scrollTop -= deltaY;
-    element.scrollLeft += deltaX;
+    // element.scrollLeft += deltaX;
+    i.element.dispatchEvent(
+        new CustomEvent('ps-update-position', { 'detail': {
+          x: element.scrollLeft + deltaX,
+          type: 'keyboard',
+        }})
+    );
+
+
     updateGeometry(i);
 
     if (shouldPreventDefault(deltaX, deltaY)) {
