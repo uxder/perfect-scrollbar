@@ -976,7 +976,7 @@ var touch = function(i) {
 
   function applyTouchMove(differenceX, differenceY) {
     element.scrollTop -= differenceY;
-    element.scrollLeft -= differenceX;
+    // element.scrollLeft -= differenceX;
 
     const x = element.scrollLeft - differenceX;
     i.element.dispatchEvent(
