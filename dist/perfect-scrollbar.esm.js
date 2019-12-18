@@ -978,6 +978,13 @@ var touch = function(i) {
     element.scrollTop -= differenceY;
     element.scrollLeft -= differenceX;
 
+    const x = element.scrollLeft - differenceX;
+    i.element.dispatchEvent(
+        new CustomEvent('ps-update-position', { 'detail': {
+          x: x,
+          type: 'touch',
+        }})
+    );
     updateGeometry(i);
   }
 
