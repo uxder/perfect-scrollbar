@@ -328,6 +328,7 @@ var updateGeometry = function(i) {
   i.contentWidth = element.scrollWidth;
   i.contentHeight = element.scrollHeight;
 
+
   if (!element.contains(i.scrollbarXRail)) {
     // clean up and append
     queryChildren(element, cls.element.rail('x')).forEach(function (el) { return remove(el); }
@@ -341,12 +342,14 @@ var updateGeometry = function(i) {
     element.appendChild(i.scrollbarYRail);
   }
 
+  const margin = i.settings.xMargin || 0;
+
   if (
     !i.settings.suppressScrollX &&
     i.containerWidth + i.settings.scrollXMarginOffset < i.contentWidth
   ) {
     i.scrollbarXActive = true;
-    i.railXWidth = i.containerWidth - i.railXMarginWidth;
+    i.railXWidth = i.containerWidth - i.railXMarginWidth - margin;
     i.railXRatio = i.containerWidth / i.railXWidth;
     i.scrollbarXWidth = getThumbSize(
       i,
@@ -1170,6 +1173,7 @@ var defaultSettings = function () { return ({
   useBothWheelAxes: false,
   wheelPropagation: true,
   wheelSpeed: 1,
+  xMargin: 0
 }); };
 
 var handlers = {
