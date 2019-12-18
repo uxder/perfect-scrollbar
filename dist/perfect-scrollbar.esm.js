@@ -887,7 +887,17 @@ var wheel = function(i) {
       // deltaX will only be used for horizontal scrolling and deltaY will
       // only be used for vertical scrolling - this is the default
       element.scrollTop -= deltaY * i.settings.wheelSpeed;
-      element.scrollLeft += deltaX * i.settings.wheelSpeed;
+      // element.scrollLeft += deltaX * i.settings.wheelSpeed;
+      const x = element.scrollLeft + (deltaX * i.settings.wheelSpeed);
+      i.element.dispatchEvent(
+          new CustomEvent('ps-update-position', { 'detail': {
+            x: x,
+            type: 'mousewheel',
+          }})
+      );
+
+
+
     } else if (i.scrollbarYActive && !i.scrollbarXActive) {
       // only vertical scrollbar is active and useBothWheelAxes option is
       // active, so let's scroll vertical bar using both mouse wheel axes
